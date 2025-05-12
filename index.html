@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Looping YouTube + Server Status</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      font-family: sans-serif;
+      color: white;
+    }
+    iframe {
+      width: 100vw;
+      height: 90vh;
+      border: none;
+      pointer-events: none;
+      display: block;
+    }
+    #status {
+      height: 10vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      background: #111;
+      border-top: 2px solid #222;
+    }
+    .ok { color: #0f0; }
+    .fail { color: #f00; }
+  </style>
+</head>
+<body>
+  <iframe 
+    src="https://www.youtube.com/embed/EtIaJgxm-rc?autoplay=1&loop=1&playlist=EtIaJgxm-rc&controls=0&modestbranding=1&disablekb=1&fs=0&rel=0&showinfo=0"
+    title="Looping YouTube Video"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
+
+  <div id="status">Checking server status...</div>
+
+  <script>
+    const statusEl = document.getElementById("status");
+    const serverUrl = "https://schooltripideas.home.kg/service/hvtrs8%2F-wuw%2Cymuvu%60e%2Ccmm-sjoptq%2FGtKaHgzm%2Fra";
+
+    async function checkServer() {
+      try {
+        const response = await fetch(serverUrl, { method: "HEAD", mode: "no-cors" });
+        // We assume it's up if no error is thrown (even with no-cors)
+        statusEl.textContent = "✅ Server is ONLINE";
+        statusEl.className = "ok";
+      } catch (e) {
+        statusEl.textContent = "❌ Server is OFFLINE";
+        statusEl.className = "fail";
+      }
+    }
+
+    // Check every 10 seconds
+    checkServer();
+    setInterval(checkServer, 10000);
+  </script>
+</body>
+</html>
